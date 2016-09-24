@@ -1,6 +1,5 @@
 package nyc.c4q.wesniemarcelin;
 
-import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 
 import java.util.Scanner;
 
@@ -23,7 +22,7 @@ public class Main {
         beginStory();
     }
 
-    public static void beginStory() {
+    private static void beginStory() {
         System.out.println("It is night time and you have awoken in an unfamiliar location with no cell phone .  You look around and see no one " +
                 "in sight. In front of you lies a red button. What should you do next");
         System.out.println("A) Get up and begin running");
@@ -35,7 +34,7 @@ public class Main {
         firstMove(letter);
     }
 
-    public static void firstMove(String move) {
+    private static void firstMove(String move) {
         move = move.toUpperCase();
         switch (move) {
             case "A":
@@ -73,7 +72,7 @@ public class Main {
         }
     }
 
-    public static void secondMove(String nextMove) {
+    private static void secondMove(String nextMove) {
         nextMove = nextMove.toUpperCase();
         switch (nextMove){
             case "A":
@@ -130,7 +129,7 @@ public class Main {
         }
     }
 
-    public static void thirdMove(String lastMove){
+    private static void thirdMove(String lastMove){
         lastMove = lastMove.toUpperCase();
         switch (lastMove){
             case "A":
@@ -180,7 +179,7 @@ public class Main {
         }
 
     }
-    public static void rePlay(){
+    private static void rePlay(){
         System.out.println("Would you like to play again? Y(YES) or N(NO)");
         Scanner scanner = new Scanner(System.in);
         String newWord = scanner.next();
