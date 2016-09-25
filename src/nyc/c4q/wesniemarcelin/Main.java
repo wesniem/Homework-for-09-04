@@ -1,29 +1,78 @@
 package nyc.c4q.wesniemarcelin;
+import nyc.c4q.wesniemarcelin.SignBoard;
 
-import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
+import java.util.Random;
 
 import java.util.Scanner;
 
 public class Main {
 
+    public static void scrollingZombieAd(SignBoard board, String[] array, int cycles) {
+    int width = board.getWidth();
+    Random random = new Random();
+    System.out.println(width);
+    int y = board.getHeight() / 2;
+    System.out.println(y);
+    for (int i = -array[1].length(); i <= width * cycles; ++i) {
+        double radians = (i) * 6.28 / array.length - 8;
+        int leftPosition = (int) ((width / 2) - (50 * Math.sin(radians/2)) - 35);
+        SignBoard.Frame frame = board.newFrame();
+        int j = 0;
+        int x = Math.abs((i % (width*4/5)) - (width*4/10)) ;
+        int color = random.nextInt(10);
+        if (color == 0)
+            frame.setGreen();
+        else if (color == 1)
+            frame.setRed();
+        else
+            frame.setYellow();
+
+        if (x >= width)
+            break;
+
+        if (x < 0) {
+            // Scrolling on to the left side.
+
+            frame.write(0, y - 4, array[j].substring(-x));
+            frame.write(0, y - 3, array[j + 1].substring(-x));
+            frame.write(0, y - 2, array[j + 2].substring(-x));
+            frame.write(0, y - 1, array[j + 3].substring(-x));
+            frame.write(0, y, array[j + 4].substring(-x));
+            frame.write(0, y + 1, array[j + 5].substring(-x));
+            frame.write(0, y + 2, array[j + 6].substring(-x));
+            frame.write(0, y + 3, array[j + 7].substring(-x));
+        } else if (x + array[1].length() <= width) {
+            // Fully on the board.
+            frame.write(x, y - 4, array[j]);
+            frame.write(x, y - 3, array[j + 1]);
+            frame.write(x, y - 2, array[j + 2]);
+            frame.write(x, y - 1, array[j + 3]);
+            frame.write(x, y, array[j + 4]);
+            frame.write(x, y + 1, array[j + 5]);
+            frame.write(x, y + 2, array[j + 6]);
+            frame.write(x, y + 3, array[j + 7]);
+        } else if (x + array[1].length() >= width) {
+            // Scrolling off the board.
+            frame.write(x, y - 4, array[j].substring(0, width - x));
+            frame.write(x, y - 3, array[j + 1].substring(0, width - x));
+            frame.write(x, y - 2, array[j + 2].substring(0, width - x));
+            frame.write(x, y - 1, array[j + 3].substring(0, width - x));
+            frame.write(x, y, array[j + 4].substring(0, width - x));
+            frame.write(x, y + 1, array[j + 5].substring(0, width - x));
+            frame.write(x, y + 2, array[j + 6].substring(0, width - x));
+            frame.write(x, y + 3, array[j + 7].substring(0, width - x));
+        }
+        frame.finish(0.01);
+    }
+}
+
     public static void main(String[] args) {
 
-
-        System.out.println("$$$$$$$$\\                        $$\\       $$\\                  $$$$$$\\                                $$\\                     $$\\ \n" +
-                "\\____$$  |                       $$ |      \\__|                $$  __$$\\                               \\__|                    $$ |\n" +
-                "    $$  / $$$$$$\\  $$$$$$\\$$$$\\  $$$$$$$\\  $$\\  $$$$$$\\        $$ /  \\__|$$\\   $$\\  $$$$$$\\ $$\\    $$\\ $$\\ $$\\    $$\\ $$$$$$\\  $$ |\n" +
-                "   $$  / $$  __$$\\ $$  _$$  _$$\\ $$  __$$\\ $$ |$$  __$$\\       \\$$$$$$\\  $$ |  $$ |$$  __$$\\\\$$\\  $$  |$$ |\\$$\\  $$  |\\____$$\\ $$ |\n" +
-                "  $$  /  $$ /  $$ |$$ / $$ / $$ |$$ |  $$ |$$ |$$$$$$$$ |       \\____$$\\ $$ |  $$ |$$ |  \\__|\\$$\\$$  / $$ | \\$$\\$$  / $$$$$$$ |$$ |\n" +
-                " $$  /   $$ |  $$ |$$ | $$ | $$ |$$ |  $$ |$$ |$$   ____|      $$\\   $$ |$$ |  $$ |$$ |       \\$$$  /  $$ |  \\$$$  / $$  __$$ |$$ |\n" +
-                "$$$$$$$$\\\\$$$$$$  |$$ | $$ | $$ |$$$$$$$  |$$ |\\$$$$$$$\\       \\$$$$$$  |\\$$$$$$  |$$ |        \\$  /   $$ |   \\$  /  \\$$$$$$$ |$$ |\n" +
-                "\\________|\\______/ \\__| \\__| \\__|\\_______/ \\__| \\_______|       \\______/  \\______/ \\__|         \\_/    \\__|    \\_/    \\_______|\\__|\n" +
-                "                                                                                                                                   \n" +
-                "                                                                                                                                   \n" +
-                "                                                                                                                                   ");
+        scrollingZombieAd(new SignBoard(8) , Array.zombieArray(), 8);
         beginStory();
     }
 
-    public static void beginStory() {
+    private static void beginStory() {
         System.out.println("It is night time and you have awoken in an unfamiliar location with no cell phone .  You look around and see no one " +
                 "in sight. In front of you lies a red button. What should you do next");
         System.out.println("A) Get up and begin running");
@@ -35,7 +84,7 @@ public class Main {
         firstMove(letter);
     }
 
-    public static void firstMove(String move) {
+    private static void firstMove(String move) {
         move = move.toUpperCase();
         switch (move) {
             case "A":
@@ -73,7 +122,7 @@ public class Main {
         }
     }
 
-    public static void secondMove(String nextMove) {
+    private static void secondMove(String nextMove) {
         nextMove = nextMove.toUpperCase();
         switch (nextMove){
             case "A":
@@ -130,7 +179,7 @@ public class Main {
         }
     }
 
-    public static void thirdMove(String lastMove){
+    private static void thirdMove(String lastMove){
         lastMove = lastMove.toUpperCase();
         switch (lastMove){
             case "A":
@@ -180,7 +229,7 @@ public class Main {
         }
 
     }
-    public static void rePlay(){
+    private static void rePlay(){
         System.out.println("Would you like to play again? Y(YES) or N(NO)");
         Scanner scanner = new Scanner(System.in);
         String newWord = scanner.next();
